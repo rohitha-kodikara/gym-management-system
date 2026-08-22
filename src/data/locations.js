@@ -36,7 +36,27 @@ export const locations = [
     phone: "+94 31 225 6789",
     hours: "Mon - Sat: 5:30 AM - 9:30 PM | Sun: 6:00 AM - 7:00 PM",
     image:
-      "https://images.unsplash.com/photo-1517963879466-e1b54ebd0642?q=80&w=2069&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2069&auto=format&fit=crop",
     mapLink: "https://maps.google.com/?q=Negombo+Main+Street",
+  },
+  {
+    id: "matara",
+    city: "Matara",
+    address: "No. 15 Beach Road, Matara",
+    phone: "+94 41 222 3456",
+    hours: "Mon - Sat: 5:30 AM - 9:30 PM | Sun: 6:00 AM - 7:00 PM",
+    image:
+      "https://images.unsplash.com/photo-1546483875-ad9014c88eba?q=80&w=2069&auto=format&fit=crop",
+    mapLink: "https://maps.google.com/?q=Matara+Beach+Road",
+  },
+  {
+    id: "kurunegala",
+    city: "Kurunegala",
+    address: "No. 30 Colombo Road, Kurunegala",
+    phone: "+94 37 222 4567",
+    hours: "Mon - Sat: 5:30 AM - 9:30 PM | Sun: 6:00 AM - 7:00 PM",
+    image:
+      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=2069&auto=format&fit=crop",
+    mapLink: "https://maps.google.com/?q=Kurunegala+Colombo+Road",
   },
 ];

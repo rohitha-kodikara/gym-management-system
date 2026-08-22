@@ -18,13 +18,14 @@ function App() {
         <Navbar />
         <main>
           <Hero />
+                  <BMISection />
           <About />
           <WhyChooseUs />
           <Packages />
           <TrainingPrograms />
           <Locations />
           <Testimonials />
-          <BMISection />
+  
           <FinalCTA />
         </main>
         <Footer />

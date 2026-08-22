@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Utensils, Info } from "lucide-react";
+import { Activity, Utensils, Info, RotateCcw } from "lucide-react";
 import { SectionReveal } from "./SectionReveal";
 import { Button } from "./custom-ui/Button";
 import { Input } from "./custom-ui/Input";
@@ -35,22 +35,53 @@ export function BMISection() {
     setResult({ bmi: bmi.toFixed(1), category, recommendation });
   };
 
+  const reset = () => {
+    setForm({
+      age: "",
+      height: "",
+      weight: "",
+      gender: "",
+      goal: "general-fitness",
+    });
+    setResult(null);
+  };
+
   return (
     <section className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center bg-[#0a0a0a] py-10 md:py-24 lg:py-32">
-      <div className="mx-auto max-w-5xl px-4 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+        <SectionReveal className="mb-8">
+          <div className="flex items-center gap-4">
+            <div className="h-px flex-1 bg-[#262626]" />
+            <Badge variant="primary">BMI & Supplement Guide</Badge>
+            <div className="h-px flex-1 bg-[#262626]" />
+          </div>
+        </SectionReveal>
+
+        <SectionReveal className="mb-8 md:mb-12">
+          <h2 className="text-center text-3xl font-black leading-relaxed text-white md:text-4xl lg:text-5xl">
+            WBMI & Supplement Guide{" "}
+            
+          </h2>
+          <p className="shine-text text-xl mx-auto mt-6 max-w-2xl text-center leading-relaxed">
+           Enter your details to get a quick BMI reading and personalized
+                supplement suggestions based on your fitness goal.
+          </p>
+        </SectionReveal>
+
         <SectionReveal className="rounded-3xl border border-[#84cc16]/20 bg-gradient-to-br from-[#141414] to-[#0f0f0f] p-6 shadow-xl md:p-10">
+         
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <Badge variant="lime" className="mb-3">
                 For Registered Members
               </Badge>
-              <h2 className="text-2xl font-black text-white md:text-3xl">
+              {/* <h2 className="text-2xl font-black text-white md:text-3xl">
                 BMI & Supplement Guide
               </h2>
               <p className="mt-2 max-w-lg text-sm text-[#a3a3a3]">
                 Enter your details to get a quick BMI reading and personalized
                 supplement suggestions based on your fitness goal.
-              </p>
+              </p> */}
             </div>
             <div className="hidden rounded-2xl bg-[#84cc16]/10 p-4 text-[#84cc16] md:block">
               <Activity className="h-10 w-10" />
@@ -125,10 +156,19 @@ export function BMISection() {
               </Select>
             </div>
 
-            <div className="sm:col-span-2 lg:col-span-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:col-span-2 lg:col-span-5">
               <Button variant="lime" className="w-full sm:w-auto" type="submit">
                 <Utensils className="h-4 w-4" />
                 Get Recommendations
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto"
+                type="button"
+                onClick={reset}
+              >
+                <RotateCcw className="h-4 w-4" />
+                Reset
               </Button>
             </div>
           </form>

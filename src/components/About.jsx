@@ -23,36 +23,36 @@ export function About() {
           </div>
         </SectionReveal>
 
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16 lg:py-8 lg:pb-0">
-          {/* Heading + mobile intro - appears first on mobile, top-right on lg */}
-          <SectionReveal className="lg:col-start-2 lg:row-start-1">
-            <h2 className="text-center text-3xl font-black leading-relaxed text-white md:text-4xl lg:text-left lg:text-5xl">
+        <div className="grid w-full grid-cols-1 items-start gap-8 sm:grid-cols-2 sm:items-center sm:gap-12 lg:gap-16 lg:py-8 lg:pb-0 ">
+          {/* Heading + mobile intro - appears first on mobile, top-right on sm */}
+          <SectionReveal className="sm:col-start-2 sm:row-start-1 -my-4">
+            <h2 className="text-center text-3xl  font-black leading-relaxed text-white sm:text-left md:text-4xl lg:text-5xl">
               We Believe Strength Is Built,{" "}
               <span className="text-[#dc2626]">Not Born.</span>
             </h2>
-            <p className="mt-6 text-left leading-relaxed text-[#a3a3a3] lg:hidden">
+            <p className="mt-6 text-left leading-relaxed text-[#a3a3a3] sm:hidden">
               Founded in Colombo with a single mission — to bring world-class
               fitness culture to Sri Lanka —
             </p>
           </SectionReveal>
 
-          {/* Image - appears second on mobile, full left column on lg */}
+          {/* Image - appears second on mobile, full left column on sm */}
           <SectionReveal
             direction="left"
-            className="relative h-full lg:col-start-1 lg:row-start-1 lg:row-span-2"
+            className="relative h-full sm:col-start-1 sm:row-start-1 sm:row-span-2"
           >
-            <div className="relative aspect-[4/3] h-full w-full overflow-hidden rounded-2xl lg:aspect-auto">
+            <div className="relative w-full overflow-hidden rounded-2xl sm:h-full">
               <img
                 src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
                 alt="Modern gym with members training"
-                className="h-full w-full rounded-2xl object-cover"
+                className="h-full w-full rounded-2xl object-contain sm:object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 to-transparent" />
             </div>
           </SectionReveal>
 
-          {/* Text content + stats - appears third on mobile, bottom-right on lg */}
-          <div className="lg:col-start-2 lg:row-start-2">
+          {/* Text content + stats - appears third on mobile, bottom-right on sm */}
+          <div className="sm:col-start-2 sm:row-start-2 sm:h-full">
             <SectionReveal delay={0.1}>
               <p className="leading-relaxed text-[#a3a3a3]">
                 Founded in Colombo with a single mission — to bring world-class
@@ -72,13 +72,13 @@ export function About() {
             </SectionReveal>
 
             <StaggerContainer
-              className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2"
+              className="mt-10 grid grid-cols-2 gap-4"
               stagger={0.08}
               delay={0.3}
             >
               {stats.map((stat) => (
                 <StaggerItem key={stat.label}>
-                  <div className=" h-full items-center justify-center rounded-xl border border-[#262626] bg-[#141414] p-4 lg:p-8 text-center transition-colors hover:border-[#dc2626]/40 w-full min-w-0 overflow-hidden">
+                  <div className=" h-full items-center justify-center rounded-xl border border-[#262626] bg-[#141414] p-4 md:p-8 text-center transition-colors hover:border-[#dc2626]/40 w-full min-w-0 overflow-hidden">
                     <p className="text-2xl font-black text-white md:text-3xl leading-none whitespace-nowrap">
                       {stat.value}
                     </p>

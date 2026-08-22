@@ -81,6 +81,27 @@ html.lenis body {
   box-shadow: 0 0 40px rgba(132, 204, 22, 0.25);
 }
 
+/* Shining text animation */
+.shine-text {
+  background: linear-gradient(
+    90deg,
+    #f6f275 0%,
+    #ffffff 50%,
+    #f6f275 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
 /* Normalize datetime-local input height on mobile WebKit browsers */
 input[type="datetime-local"]::-webkit-datetime-edit {
   padding: 0;

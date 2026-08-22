@@ -32,7 +32,7 @@ export const programs = [
     description:
       "Treadmills, assault bikes, rowers, and dynamic classes to keep your heart strong.",
     image:
-      "https://images.unsplash.com/photo-1538805060512-e2c8e1f6b58e?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?q=80&w=2070&auto=format&fit=crop",
     level: "All Levels",
   },
   {
@@ -43,5 +43,14 @@ export const programs = [
     image:
       "https://images.unsplash.com/photo-1534367610401-9f5ed68180aa?q=80&w=2070&auto=format&fit=crop",
     level: "Intermediate - Advanced",
+  },
+  {
+    id: "boxing",
+    title: "Boxing & Combat",
+    description:
+      "High-intensity boxing drills, pad work, and conditioning to sharpen reflexes and torch calories.",
+    image:
+      "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?q=80&w=2070&auto=format&fit=crop",
+    level: "All Levels",
   },
 ];

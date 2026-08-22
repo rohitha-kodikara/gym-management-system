@@ -1,16 +1,113 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" style="background-color: #0a0a0a">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0a" />
     <title>KJ Power Fitness Center | Build Your Strongest Self</title>
     <meta name="description" content="Sri Lanka's premium fitness destination. Modern equipment, expert trainers, and results-focused programs at KJ Power Fitness Center." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      html {
+        background-color: #0a0a0a;
+        color-scheme: dark;
+        scrollbar-color: #333333 #0a0a0a;
+        overscroll-behavior: none;
+      }
+      html::-webkit-scrollbar {
+        background-color: #0a0a0a;
+      }
+      html::-webkit-scrollbar-thumb {
+        background-color: #333333;
+      }
+      body {
+        margin: 0;
+        background-color: #0a0a0a;
+        color: #f5f5f5;
+        overflow-x: hidden;
+      }
+      .boot-shimmer-bar {
+        position: relative;
+        overflow: hidden;
+        background-color: #1c1c1c;
+        border-radius: 9999px;
+      }
+      .boot-progress-fill {
+        position: relative;
+        height: 100%;
+        width: 0%;
+        background-color: #dc2626;
+        border-radius: 9999px;
+        transition: width 0.15s ease-out;
+      }
+      .boot-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0a0a0a;
+        opacity: 1;
+        transition: opacity 0.4s ease;
+      }
+      .boot-loader,
+      .boot-loader * {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+      }
+      .boot-loader.boot-loader-hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
   </head>
-  <body>
+  <body style="background-color: #0a0a0a">
+    <div class="boot-loader" id="boot-loader">
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;"
+      >
+        <div
+          style="display: flex; align-items: center; gap: 10px; user-select: none;"
+        >
+          <span
+            style="display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 10px; background-color: #dc2626; font-weight: 900; color: #ffffff; font-family: Inter, sans-serif;"
+            >SK</span
+          >
+          <span
+            style="font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #ffffff; font-family: Inter, sans-serif;"
+            >Power <span style="color: #dc2626">Fitness</span></span
+          >
+        </div>
+        <div class="boot-shimmer-bar" style="width: 180px; height: 4px;">
+          <div class="boot-progress-fill" id="boot-progress"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var fill = document.getElementById("boot-progress");
+        if (!fill) return;
+        var progress = 0;
+        var finished = false;
+        function tick() {
+          if (finished) return;
+          progress += Math.max(0.5, (90 - progress) * 0.03);
+          if (progress > 90) progress = 90;
+          fill.style.width = progress + "%";
+          setTimeout(tick, 120);
+        }
+        tick();
+        window.addEventListener("load", function () {
+          finished = true;
+          fill.style.width = "100%";
+        });
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
