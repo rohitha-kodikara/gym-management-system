@@ -164,9 +164,9 @@ export function Hero() {
           <div className="flex justify-center sm:justify-end">
             <motion.div
               variants={itemVariants}
-              className="w-full rounded-2xl border border-[#262626]/80 bg-[#0a0a0a]/70 p-4 backdrop-blur-md sm:max-w-md sm:mt-1 md:p-5"
+              className=" w-full rounded-2xl border border-[#262626]/80 bg-[#0a0a0a]/70 p-4 backdrop-blur-md sm:max-w-md sm:mt-1 md:p-5"
             >
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-[#a3a3a3]">
+              <p className="mb-6 text-xs font-semibold uppercase tracking-wider text-[#a3a3a3]">
                 Book Your Appointment
               </p>
               <Form {...form}>
