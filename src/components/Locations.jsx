@@ -14,7 +14,7 @@ import { Badge } from "./ui/Badge";
 
 function getPerView() {
   if (typeof window === "undefined") return 1;
-  if (window.innerWidth >= 1024) return 3;
+  if (window.innerWidth >= 1024) return 4;
   if (window.innerWidth >= 640) return 2;
   return 1;
 }
@@ -26,6 +26,7 @@ export function Locations() {
 
   const maxIndex = Math.max(0, locations.length - perView);
   const activeIndex = Math.min(index, maxIndex);
+  const slideWidth = perView === 1 ? 100 : 100 / perView;
 
   useEffect(() => {
     const handleResize = () => setPerView(getPerView());
@@ -50,11 +51,11 @@ export function Locations() {
   return (
     <section
       id="locations"
-      className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center bg-[#0a0a0a] py-10 md:py-24 lg:py-18"
+      className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center overflow-x-hidden bg-[#0a0a0a] py-10 md:py-24 lg:py-18"
     >
-      <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+      <div className="px-4 md:px-6 lg:px-8">
         <SectionReveal className="mb-6">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <div className="h-px flex-1 bg-[#262626]" />
             <Badge variant="primary">Locations</Badge>
             <div className="h-px flex-1 bg-[#262626]" />
@@ -72,42 +73,42 @@ export function Locations() {
         </SectionReveal>
 
         <div
-          className="relative mt-14"
+          className="relative mt-14 overflow-hidden"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
           <button
             onClick={prev}
             aria-label="Previous location"
-            className="absolute -left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#262626] bg-[#141414] text-white shadow-lg transition-colors hover:border-[#dc2626] hover:bg-[#dc2626] md:-left-5"
+            className="absolute left-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#262626] bg-[#141414] text-white shadow-lg transition-colors hover:border-[#dc2626] hover:bg-[#dc2626]"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-6 w-6" />
           </button>
 
           <button
             onClick={next}
             aria-label="Next location"
-            className="absolute -right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#262626] bg-[#141414] text-white shadow-lg transition-colors hover:border-[#dc2626] hover:bg-[#dc2626] md:-right-5"
+            className="absolute right-2 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#262626] bg-[#141414] text-white shadow-lg transition-colors hover:border-[#dc2626] hover:bg-[#dc2626]"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-6 w-6" />
           </button>
 
-          <div className="overflow-hidden px-1 py-1">
+          <div className="overflow-hidden">
             <motion.div
-              className="flex"
-              animate={{ x: `-${(activeIndex * 100) / perView}%` }}
+              className="flex w-full"
+              animate={{ x: `-${activeIndex * slideWidth}%` }}
               transition={{ type: "tween", ease: "easeInOut", duration: 0.6 }}
             >
               {locations.map((location) => (
                 <div
                   key={location.id}
-                  className="shrink-0"
-                  style={{ width: `${100 / perView}%` }}
+                  className="min-w-0 shrink-0 flex justify-center"
+                  style={{ width: `${slideWidth}%` }}
                 >
                   <motion.div
                     whileHover={{ y: -6 }}
                     transition={{ duration: 0.25 }}
-                    className="group mx-3 flex h-full flex-col overflow-hidden rounded-2xl border border-[#262626] bg-[#141414]"
+                    className="group mx-4 flex h-full flex-col overflow-hidden rounded-2xl border border-[#262626] bg-[#141414] sm:mx-2"
                   >
                     <div className="aspect-[4/3] overflow-hidden">
                       <img
@@ -116,7 +117,7 @@ export function Locations() {
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
-                    <div className="flex flex-1 flex-col p-5">
+                    <div className="flex flex-1 flex-col p-4 sm:p-5">
                       <h3 className="text-lg font-bold text-white">
                         {location.city}
                       </h3>
