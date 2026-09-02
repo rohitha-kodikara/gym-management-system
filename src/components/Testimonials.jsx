@@ -35,7 +35,7 @@ export function Testimonials() {
           delay={0.1}
         >
           {testimonials.map((testimonial) => (
-            <StaggerItem key={testimonial.id}>
+            <StaggerItem key={testimonial.tType}>
               <motion.div
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.25 }}

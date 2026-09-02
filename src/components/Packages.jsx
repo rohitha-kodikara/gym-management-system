@@ -36,7 +36,7 @@ export function Packages() {
           delay={0.1}
         >
           {packages.map((pkg) => (
-            <StaggerItem key={pkg.id}>
+            <StaggerItem key={pkg.type}>
               <motion.div
                 whileHover={{ y: -8 }}
                 transition={{ duration: 0.25 }}
