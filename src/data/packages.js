@@ -1,6 +1,6 @@
 export const packages = [
   {
-    id: "basic",
+    type: "basic",
     name: "Basic",
     price: "7,500",
     duration: "per month",
@@ -15,7 +15,7 @@ export const packages = [
     ],
   },
   {
-    id: "premium",
+    type: "premium",
     name: "Premium",
     price: "14,500",
     duration: "per month",
@@ -31,7 +31,7 @@ export const packages = [
     ],
   },
   {
-    id: "elite",
+    type: "elite",
     name: "Elite",
     price: "28,000",
     duration: "per month",

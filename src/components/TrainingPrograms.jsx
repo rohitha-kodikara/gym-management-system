@@ -33,7 +33,7 @@ export function TrainingPrograms() {
           delay={0.1}
         >
           {programs.map((program) => (
-            <StaggerItem key={program.id}>
+            <StaggerItem key={program.prType}>
               <motion.div
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.25 }}
