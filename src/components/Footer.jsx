@@ -36,7 +36,7 @@ export function Footer() {
             </a>
             <p className="mt-4 text-sm leading-relaxed text-[#a3a3a3]">
               Sri Lanka&apos;s premium fitness destination. Building stronger
-              bodies and stronger minds since 2013.
+              bodies and Stronger minds since 2013.
             </p>
             <div className="mt-6 flex items-center gap-4">
               <a
