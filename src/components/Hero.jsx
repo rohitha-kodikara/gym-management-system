@@ -177,7 +177,7 @@ export function Hero() {
   } = useQuery({
     queryKey: ["hero"],
     queryFn: getHero,
-    staleTime: Infinity,
+    staleTime: 1000 * 1,
   });
 
   const {
@@ -198,7 +198,6 @@ export function Hero() {
   const isHeroError = error && !heroSData;
   const isLocationsError = locationsError && !locationsData;
   console.log(heroSData);
-
   if (isHeroError || isLocationsError) {
     return (
       <HeroError
@@ -250,12 +249,10 @@ export function Hero() {
     FALLBACKS.submitButtonText,
   );
   const successMsg = clean(heroSData?.successMessage, FALLBACKS.successMessage);
-  const altText = clean(
-    heroSData?.backgroundImageAlt,
-    FALLBACKS.backgroundImageAlt,
-  );
 
   const heroImageUrl = getStrapiMedia(heroSData?.backgroundImage);
+  const heroImageAlt =
+    heroSData?.backgroundImage?.alternativeText || FALLBACKS.backgroundImageAlt;
   const trainingOptions = heroSData?.trainingOptions ?? [];
 
   function onSubmit() {
@@ -288,8 +285,9 @@ export function Hero() {
         {heroImageUrl && (
           <img
             src={heroImageUrl}
-            alt={altText}
+            alt={heroImageAlt}
             onLoad={() => setHeroLoaded(true)}
+            onError={() => setHeroLoaded(true)}
             className={`h-full w-full object-cover object-[70%_top] transition-opacity duration-700 md:object-[65%_top] ${
               heroLoaded ? "opacity-100" : "opacity-0"
             }`}

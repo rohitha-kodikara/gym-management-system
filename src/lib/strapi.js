@@ -1,7 +1,23 @@
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 
 async function fetchFromStrapi(endpoint) {
-  const res = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*`);
+  const res = await fetch(`${STRAPI_URL}/api/${endpoint}?populate=*`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
+  const json = await res.json();
+  return json.data;
+}
+
+async function fetchWithCustomPopulate(endpoint) {
+  const [path, query = ""] = endpoint.split("?");
+  const params = new URLSearchParams(query);
+  if (!params.toString().includes("populate")) {
+    params.set("populate", "*");
+  }
+  const res = await fetch(`${STRAPI_URL}/api/${path}?${params.toString()}`, {
+    cache: "no-store",
+  });
   if (!res.ok) throw new Error(`Failed to fetch ${endpoint}`);
   const json = await res.json();
   return json.data;
@@ -24,7 +40,10 @@ export const getNavbar = () => fetchFromStrapi("navbar");
 export const getBmiSection = () => fetchFromStrapi("bmi");
 export const getFinalCTA = () => fetchFromStrapi("final-cta");
 export const getFooter = () => fetchFromStrapi("footer");
-export const getHero = () => fetchFromStrapi("hero");
+export const getHero = () =>
+  fetchWithCustomPopulate(
+    "hero?populate[0]=backgroundImage&populate[1]=trainingOptions",
+  );
 export const getLocations = () => fetchFromStrapi("locations");
 export const getLocationSection = () => fetchFromStrapi("locations-section");
 
