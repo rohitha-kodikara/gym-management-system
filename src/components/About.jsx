@@ -2,10 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
 import { Badge } from "./ui/Badge";
 import { getAbout } from "@/lib/strapi";
+import { clean } from "@/lib/text";
 
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
-
-const cleanText = (text) => text?.trim().replace(/\s+/g, " ");
 
 const resolveImageUrl = (url) => {
   if (!url) return null;
@@ -21,6 +20,7 @@ export function About() {
   } = useQuery({
     queryKey: ["about-section"],
     queryFn: getAbout,
+    staleTime: 30_000,
   });
 
   if (isLoading) return null; // or skeleton
@@ -37,8 +37,6 @@ export function About() {
     image,
     stats,
   } = aboutData ?? {};
-
-  const clean = (text, fallback) => cleanText(text) ?? fallback ?? "";
 
   const badge = clean(badgeText, "Our Story");
   const title = clean(heading, "We Believe Strength Is Built,");

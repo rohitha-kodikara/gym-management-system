@@ -14,6 +14,7 @@ export function Navbar() {
   } = useQuery({
     queryKey: ["navbar"],
     queryFn: getNavbar,
+    staleTime: Infinity,
   });
 
   const [isOpen, setIsOpen] = useState(false);

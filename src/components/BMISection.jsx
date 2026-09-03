@@ -8,8 +8,10 @@ import { Select } from "./custom-ui/Select";
 import { Badge } from "./ui/Badge";
 import { useQuery } from "@tanstack/react-query";
 import { getBmiCategory, getBmiSection, getSupplements } from "@/lib/strapi";
+import { clean } from "@/lib/text";
+import { UI_TEXT } from "@/lib/uiText";
 
-const cleanText = (text) => text?.trim().replace(/\s+/g, " ");
+const bmiErrorCopy = UI_TEXT.bmiSection.loadError;
 
 export function BMISection() {
   const {
@@ -20,6 +22,7 @@ export function BMISection() {
   } = useQuery({
     queryKey: ["bmi"],
     queryFn: getBmiSection,
+    staleTime: 30_000,
   });
 
   const {
@@ -30,6 +33,7 @@ export function BMISection() {
   } = useQuery({
     queryKey: ["bmi-categories"],
     queryFn: getBmiCategory,
+    staleTime: 30_000,
   });
 
   const {
@@ -40,6 +44,7 @@ export function BMISection() {
   } = useQuery({
     queryKey: ["supplements"],
     queryFn: getSupplements,
+    staleTime: 30_000,
   });
 
   const [form, setForm] = useState({
@@ -109,10 +114,10 @@ export function BMISection() {
         <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
           <div className="rounded-3xl border border-[#262626] bg-[#141414] p-10 text-center md:p-16">
             <p className="text-lg font-semibold text-white">
-              We couldn&apos;t load the BMI &amp; Supplement Guide right now.
+              {bmiErrorCopy.title}
             </p>
             <p className="mt-2 text-sm text-[#a3a3a3]">
-              Please check your connection and try again.
+              {bmiErrorCopy.subtitle}
             </p>
             <Button
               variant="lime"
@@ -125,7 +130,7 @@ export function BMISection() {
               }}
             >
               <RotateCcw className="h-4 w-4" />
-              Try again
+              {bmiErrorCopy.retryButton}
             </Button>
           </div>
         </div>
@@ -158,8 +163,6 @@ export function BMISection() {
   const ageField = fieldByName("Age");
   const heightField = fieldByName("Height");
   const weightField = fieldByName("Weight");
-
-  const clean = (text, fallback) => cleanText(text) ?? fallback ?? "";
 
   const badge = clean(badgeText, "BMI & Supplement Guide");
   const title = clean(heading, "BMI & Supplement Guide");
