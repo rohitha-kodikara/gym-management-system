@@ -26,6 +26,8 @@ export const getFinalCTA = () => fetchFromStrapi("final-cta");
 export const getFooter = () => fetchFromStrapi("footer");
 export const getHero = () => fetchFromStrapi("hero");
 export const getLocations = () => fetchFromStrapi("locations");
+export const getLocationSection = () => fetchFromStrapi("locations-section");
+
 export const getPackages = () => fetchFromStrapi("packages");
 export const getTestimonials = () => fetchFromStrapi("testimonials");
 export const getTrainingProgramSection = () =>

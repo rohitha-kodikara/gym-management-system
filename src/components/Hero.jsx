@@ -197,6 +197,7 @@ export function Hero() {
 
   const isHeroError = error && !heroSData;
   const isLocationsError = locationsError && !locationsData;
+  console.log(heroSData);
 
   if (isHeroError || isLocationsError) {
     return (
@@ -214,50 +215,44 @@ export function Hero() {
   const badge = clean(heroSData?.badgeText, FALLBACKS.badge);
   const heading1 = clean(
     heroSData?.mainHeadingLine1,
-    FALLBACKS.mainHeadingLine1
+    FALLBACKS.mainHeadingLine1,
   );
   const highlight = clean(
     heroSData?.mainHeadingHighlight,
-    FALLBACKS.mainHeadingHighlight
+    FALLBACKS.mainHeadingHighlight,
   );
   const desc = clean(heroSData?.description, FALLBACKS.description);
   const primaryBtn = clean(
     heroSData?.primaryButtonText,
-    FALLBACKS.primaryButtonText
+    FALLBACKS.primaryButtonText,
   );
   const secondaryBtn = clean(
     heroSData?.secondaryButtonText,
-    FALLBACKS.secondaryButtonText
+    FALLBACKS.secondaryButtonText,
   );
   const formTitle = clean(
     heroSData?.bookingFormTitle,
-    FALLBACKS.bookingFormTitle
+    FALLBACKS.bookingFormTitle,
   );
   const locLabel = clean(heroSData?.locationLabel, FALLBACKS.locationLabel);
   const locPlaceholder = clean(
     heroSData?.locationPlaceholder,
-    FALLBACKS.locationPlaceholder
+    FALLBACKS.locationPlaceholder,
   );
   const dtLabel = clean(heroSData?.datetimeLabel, FALLBACKS.datetimeLabel);
-  const trainLabel = clean(
-    heroSData?.trainingLabel,
-    FALLBACKS.trainingLabel
-  );
+  const trainLabel = clean(heroSData?.trainingLabel, FALLBACKS.trainingLabel);
   const trainPlaceholder = clean(
     heroSData?.trainingPlaceholder,
-    FALLBACKS.trainingPlaceholder
+    FALLBACKS.trainingPlaceholder,
   );
   const submitBtn = clean(
     heroSData?.submitButtonText,
-    FALLBACKS.submitButtonText
+    FALLBACKS.submitButtonText,
   );
-  const successMsg = clean(
-    heroSData?.successMessage,
-    FALLBACKS.successMessage
-  );
+  const successMsg = clean(heroSData?.successMessage, FALLBACKS.successMessage);
   const altText = clean(
     heroSData?.backgroundImageAlt,
-    FALLBACKS.backgroundImageAlt
+    FALLBACKS.backgroundImageAlt,
   );
 
   const heroImageUrl = getStrapiMedia(heroSData?.backgroundImage);
