@@ -6,6 +6,8 @@ import {
   Dumbbell,
   CheckCircle2,
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getHero } from "@/lib/strapi";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -70,8 +72,19 @@ export function Hero() {
     },
   });
 
-  function onSubmit(values) {
-    console.log("Booking appointment:", values);
+  const {
+    data: heroSData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["hero"],
+    queryFn: getHero,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
+  function onSubmit() {
     setSuccess(true);
     form.reset();
     setTimeout(() => setSuccess(false), 4000);

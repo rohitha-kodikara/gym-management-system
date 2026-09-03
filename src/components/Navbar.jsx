@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "./custom-ui/Button";
 import { scrollToSection } from "../utils/scroll";
-
-const navLinks = [
-  { label: "Home", href: "home" },
-  { label: "Our Story", href: "about" },
-  { label: "Packages", href: "packages" },
-  { label: "Locations", href: "locations" },
-  { label: "Testimonials", href: "testimonials" },
-  { label: "Contact", href: "contact" },
-];
+import { getNavbar } from "@/lib/strapi";
 
 export function Navbar() {
+  const {
+    data: navbarData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["navbar"],
+    queryFn: getNavbar,
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -39,6 +41,18 @@ export function Navbar() {
     scrollToSection(href);
   };
 
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
+  const {
+    NavLink,
+    logoBadgeText,
+    logoTextPrimary,
+    logoTextHighlight,
+    loginButtonText,
+    signupButtonText,
+  } = navbarData ?? {};
+
   return (
     <>
       <motion.header
@@ -61,15 +75,18 @@ export function Navbar() {
             className="flex items-center gap-2"
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#dc2626] font-black text-white">
-              SK
+              {logoBadgeText ?? "SK"}
             </span>
             <span className="hidden text-lg font-bold tracking-tight text-white sm:block">
-              Power <span className="text-[#dc2626]">Fitness</span>
+              {logoTextPrimary ?? "Power"}{" "}
+              <span className="text-[#dc2626]">
+                {logoTextHighlight ?? "Fitness"}
+              </span>
             </span>
           </a>
 
           <ul className="hidden items-center gap-6 lg:flex">
-            {navLinks.map((link) => (
+            {NavLink?.map((link) => (
               <li key={link.href}>
                 <a
                   href={`#${link.href}`}
@@ -92,10 +109,10 @@ export function Navbar() {
               size="sm"
               className="border border-white/40 hover:border-white"
             >
-              Login
+              {loginButtonText ?? "Login"}
             </Button>
             <Button animate size="sm">
-              Sign Up
+              {signupButtonText ?? "Sign Up"}
             </Button>
           </div>
 
@@ -125,7 +142,7 @@ export function Navbar() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="flex h-full flex-col items-center justify-center gap-6 px-6"
             >
-              {navLinks.map((link, index) => (
+              {NavLink?.map((link, index) => (
                 <motion.a
                   key={link.href}
                   href={`#${link.href}`}
@@ -143,9 +160,11 @@ export function Navbar() {
               ))}
               <div className="mt-4 flex w-full max-w-xs flex-col gap-3">
                 <Button variant="secondary" className="w-full">
-                  Login
+                  {loginButtonText ?? "Login"}
                 </Button>
-                <Button className="w-full">Sign Up</Button>
+                <Button className="w-full">
+                  {signupButtonText ?? "Sign Up"}
+                </Button>
               </div>
             </motion.div>
           </motion.div>

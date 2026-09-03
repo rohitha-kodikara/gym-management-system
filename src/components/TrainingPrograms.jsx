@@ -2,9 +2,23 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
 import { programs } from "../data/programs";
+import { useQuery } from "@tanstack/react-query";
+import { getTrainingProgramSection } from "../lib/strapi";
 import { Badge } from "./ui/Badge";
 
 export function TrainingPrograms() {
+  const {
+    data: trainingData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["training-program-section"],
+    queryFn: getTrainingProgramSection,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
   return (
     <section className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center bg-[#0a0a0a] py-10 md:py-24 lg:py-25">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">

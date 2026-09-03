@@ -2,8 +2,22 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { SectionReveal } from "./SectionReveal";
 import { Button } from "./custom-ui/Button";
 import { Badge } from "./ui/Badge";
+import { useQuery } from "@tanstack/react-query";
+import { getFinalCTA } from "@/lib/strapi";
 
 export function FinalCTA() {
+  const {
+    data: finalCTAData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["final-cta"],
+    queryFn: getFinalCTA,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
   return (
     <section className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center overflow-hidden bg-[#0a0a0a] py-10 md:py-24 lg:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15),transparent_60%)]" />

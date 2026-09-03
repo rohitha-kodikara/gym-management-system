@@ -3,9 +3,23 @@ import { Check } from "lucide-react";
 import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
 import { packages } from "../data/packages";
 import { Button } from "./custom-ui/Button";
+import { useQuery } from "@tanstack/react-query";
+import { getPackages } from "../lib/strapi";
 import { Badge } from "./ui/Badge";
 
 export function Packages() {
+  const {
+    data: packagesData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["packages"],
+    queryFn: getPackages,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
   return (
     <section
       id="packages"

@@ -1,14 +1,56 @@
+import { useQuery } from "@tanstack/react-query";
 import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
 import { Badge } from "./ui/Badge";
+import { getAbout } from "@/lib/strapi";
 
-const stats = [
-  { value: "12+", label: "Years of Excellence" },
-  { value: "4", label: "Island-Wide Locations" },
-  { value: "25+", label: "Expert Coaches" },
-  { value: "8K+", label: "Transformed Members" },
-];
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
+
+const cleanText = (text) => text?.trim().replace(/\s+/g, " ");
+
+const resolveImageUrl = (url) => {
+  if (!url) return null;
+  if (/^https?:\/\//.test(url)) return url;
+  return `${STRAPI_URL}${url}`;
+};
 
 export function About() {
+  const {
+    data: aboutData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["about-section"],
+    queryFn: getAbout,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
+  const {
+    badgeText = "Our Story",
+    heading = "We Believe Strength Is Built,",
+    headingHighlight = "Not Born.",
+    introText = "",
+    paragraph1 = "",
+    paragraph2 = "",
+    imageAltText = "Modern gym with members training",
+    image,
+    stats,
+  } = aboutData ?? {};
+
+  const clean = (text, fallback) => cleanText(text) ?? fallback ?? "";
+
+  const badge = clean(badgeText, "Our Story");
+  const title = clean(heading, "We Believe Strength Is Built,");
+  const highlight = clean(headingHighlight, "Not Born.");
+  const intro = clean(introText, "");
+  const para1 = clean(paragraph1, "");
+  const para2 = clean(paragraph2, "");
+  const alt = clean(imageAltText, "Modern gym with members training");
+  const imgSrc =
+    resolveImageUrl(image?.url) ??
+    "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop";
+
   return (
     <section
       id="about"
@@ -18,7 +60,7 @@ export function About() {
         <SectionReveal className="mb-8">
           <div className="flex items-center gap-4">
             <div className="h-px flex-1 bg-[#262626]" />
-            <Badge variant="primary">Our Story</Badge>
+            <Badge variant="primary">{badge}</Badge>
             <div className="h-px flex-1 bg-[#262626]" />
           </div>
         </SectionReveal>
@@ -27,12 +69,10 @@ export function About() {
           {/* Heading + mobile intro - appears first on mobile, top-right on sm */}
           <SectionReveal className="sm:col-start-2 sm:row-start-1 -my-4">
             <h2 className="text-center text-3xl  font-black leading-relaxed text-white sm:text-left md:text-4xl lg:text-5xl">
-              We Believe Strength Is Built,{" "}
-              <span className="text-[#dc2626]">Not Born.</span>
+              {title} <span className="text-[#dc2626]">{highlight}</span>
             </h2>
             <p className="mt-6 text-left leading-relaxed text-[#a3a3a3] sm:hidden">
-              Founded in Colombo with a single mission — to bring world-class
-              fitness culture to Sri Lanka —
+              {intro}
             </p>
           </SectionReveal>
 
@@ -43,8 +83,8 @@ export function About() {
           >
             <div className="relative w-full overflow-hidden rounded-2xl sm:h-full">
               <img
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
-                alt="Modern gym with members training"
+                src={imgSrc}
+                alt={alt}
                 className="h-full w-full rounded-2xl object-contain sm:object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/60 to-transparent" />
@@ -54,21 +94,11 @@ export function About() {
           {/* Text content + stats - appears third on mobile, bottom-right on sm */}
           <div className="sm:col-start-2 sm:row-start-2 sm:h-full">
             <SectionReveal delay={0.1}>
-              <p className="leading-relaxed text-[#a3a3a3]">
-                Founded in Colombo with a single mission — to bring world-class
-                fitness culture to Sri Lanka — KJ Power Fitness Center has grown
-                into one of the island&apos;s most trusted names in health and
-                performance.
-              </p>
+              <p className="leading-relaxed text-[#a3a3a3]">{para1}</p>
             </SectionReveal>
 
             <SectionReveal delay={0.2}>
-              <p className="mt-4 leading-relaxed text-[#a3a3a3]">
-                Our philosophy is simple: combine modern equipment,
-                science-backed programming, and passionate coaches in an
-                environment where everyone — from first-timers to competitive
-                athletes — feels empowered to level up.
-              </p>
+              <p className="mt-4 leading-relaxed text-[#a3a3a3]">{para2}</p>
             </SectionReveal>
 
             <StaggerContainer
@@ -76,8 +106,8 @@ export function About() {
               stagger={0.08}
               delay={0.3}
             >
-              {stats.map((stat) => (
-                <StaggerItem key={stat.label}>
+              {stats?.map((stat) => (
+                <StaggerItem key={stat.id}>
                   <div className=" h-full items-center justify-center rounded-xl border border-[#262626] bg-[#141414] p-4 md:p-8 text-center transition-colors hover:border-[#dc2626]/40 w-full min-w-0 overflow-hidden">
                     <p className="text-2xl font-black text-white md:text-3xl leading-none whitespace-nowrap">
                       {stat.value}

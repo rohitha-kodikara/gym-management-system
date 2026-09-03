@@ -8,6 +8,8 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getLocations } from "../lib/strapi";
 import { SectionReveal } from "./SectionReveal";
 import { locations } from "../data/locations";
 import { Badge } from "./ui/Badge";
@@ -47,6 +49,18 @@ export function Locations() {
     const id = setInterval(next, 3000);
     return () => clearInterval(id);
   }, [next, paused, maxIndex]);
+
+  const {
+    data: locationsData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["locations"],
+    queryFn: getLocations,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
 
   return (
     <section
@@ -171,4 +185,3 @@ export function Locations() {
     </section>
   );
 }
-

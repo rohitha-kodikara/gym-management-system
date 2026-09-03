@@ -2,9 +2,23 @@ import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
 import { testimonials } from "../data/testimonials";
+import { useQuery } from "@tanstack/react-query";
+import { getTestimonials } from "../lib/strapi";
 import { Badge } from "./ui/Badge";
 
 export function Testimonials() {
+  const {
+    data: testimonialsData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["testimonials"],
+    queryFn: getTestimonials,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
   return (
     <section
       id="testimonials"

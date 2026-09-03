@@ -2,8 +2,22 @@ import { motion } from "framer-motion";
 import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
 import { features } from "../data/features";
 import { Badge } from "./ui/Badge";
+import { useQuery } from "@tanstack/react-query";
+import { getWhyChooseUs } from "../lib/strapi";
 
 export function WhyChooseUs() {
+  const {
+    data: whyChooseUsData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["why-choose-us"],
+    queryFn: getWhyChooseUs,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
   return (
     <section className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center bg-[#0a0a0a] py-10 md:py-24 lg:py-25">
       <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">

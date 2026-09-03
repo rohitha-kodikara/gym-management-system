@@ -1,6 +1,8 @@
 import { MapPin, Phone, Mail, Clock, Share2, Globe } from "lucide-react";
 import { scrollToSection } from "../utils/scroll";
 import { locations } from "../data/locations";
+import { useQuery } from "@tanstack/react-query";
+import { getFooter } from "@/lib/strapi";
 
 const quickLinks = [
   { label: "Home", href: "home" },
@@ -11,6 +13,18 @@ const quickLinks = [
 ];
 
 export function Footer() {
+  const {
+    data: footerData,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["footer"],
+    queryFn: getFooter,
+  });
+
+  if (isLoading) return null; // or skeleton
+  if (error) return null;
+
   return (
     <footer
       id="contact"
