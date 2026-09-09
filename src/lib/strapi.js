@@ -57,3 +57,8 @@ export const getSupplements = () => fetchFromStrapi("supplements");
 
 export const getPackages = () => fetchFromStrapi("packages");
 export const getPackageSection = () => fetchFromStrapi("package-section");
+
+export const getTestimonialSection = () => fetchFromStrapi("testimonial-section");
+
+export const getProgram = () => fetchFromStrapi("programs");
+export const getFeature = () => fetchFromStrapi("features");
