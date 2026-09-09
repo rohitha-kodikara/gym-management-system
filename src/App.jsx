@@ -1,15 +1,15 @@
 import { SmoothScrollProvider } from "./components/SmoothScroll";
 import { Navbar } from "./components/Navbar";
-import { Hero } from "./components/Hero";
-import { About } from "./components/About";
+import { Hero } from "./components/hero/Hero";
+import { About } from "./components/about/About";
 import { WhyChooseUs } from "./components/WhyChooseUs";
-import { Packages } from "./components/Packages";
+import { Packages } from "./components/packages/Packages";
 import { TrainingPrograms } from "./components/TrainingPrograms";
-import { Locations } from "./components/Locations";
+import { Locations } from "./components/locations/Locations";
 import { Testimonials } from "./components/Testimonials";
-import { BMISection } from "./components/BMISection";
-import { FinalCTA } from "./components/FinalCTA";
-import { Footer } from "./components/Footer";
+import { BMISection } from "./components/bmi/BMISection";
+import { FinalCTA } from "./components/finalcta/FinalCTA";
+import { Footer } from "./components/footer/Footer";
 
 function App() {
   return (

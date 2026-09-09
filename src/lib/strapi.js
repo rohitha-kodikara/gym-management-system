@@ -47,10 +47,13 @@ export const getHero = () =>
 export const getLocations = () => fetchFromStrapi("locations");
 export const getLocationSection = () => fetchFromStrapi("locations-section");
 
-export const getPackages = () => fetchFromStrapi("packages");
+
 export const getTestimonials = () => fetchFromStrapi("testimonials");
 export const getTrainingProgramSection = () =>
   fetchFromStrapi("training-program-section");
 export const getWhyChooseUs = () => fetchFromStrapi("why-choose-us");
 export const getBmiCategory = () => fetchFromStrapi("bmi-categories");
 export const getSupplements = () => fetchFromStrapi("supplements");
+
+export const getPackages = () => fetchFromStrapi("packages");
+export const getPackageSection = () => fetchFromStrapi("package-section");

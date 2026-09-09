@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { SectionReveal, StaggerContainer, StaggerItem } from "./SectionReveal";
-import { Badge } from "./ui/Badge";
+import { SectionReveal, StaggerContainer, StaggerItem } from "../SectionReveal";
+import { Badge } from "../ui/Badge";
 import { getAbout } from "@/lib/strapi";
 import { clean } from "@/lib/text";
+import { StatCard } from "./StatCard";
 
 const STRAPI_URL = import.meta.env.VITE_STRAPI_URL;
 
@@ -23,7 +24,7 @@ export function About() {
     staleTime: 30_000,
   });
 
-  if (isLoading) return null; // or skeleton
+  if (isLoading) return null;
   if (error) return null;
 
   const {
@@ -63,10 +64,9 @@ export function About() {
           </div>
         </SectionReveal>
 
-        <div className="grid w-full grid-cols-1 items-start gap-8 sm:grid-cols-2 sm:items-center sm:gap-12 lg:gap-16 lg:py-8 lg:pb-0 ">
-          {/* Heading + mobile intro - appears first on mobile, top-right on sm */}
+        <div className="grid w-full grid-cols-1 items-start gap-8 sm:grid-cols-2 sm:items-center sm:gap-12 lg:gap-16 lg:py-8 lg:pb-0">
           <SectionReveal className="sm:col-start-2 sm:row-start-1 -my-4">
-            <h2 className="text-center text-3xl  font-black leading-relaxed text-white sm:text-left md:text-4xl lg:text-5xl">
+            <h2 className="text-center text-3xl font-black leading-relaxed text-white sm:text-left md:text-4xl lg:text-5xl">
               {title} <span className="text-[#dc2626]">{highlight}</span>
             </h2>
             <p className="mt-6 text-left leading-relaxed text-[#a3a3a3] sm:hidden">
@@ -74,7 +74,6 @@ export function About() {
             </p>
           </SectionReveal>
 
-          {/* Image - appears second on mobile, full left column on sm */}
           <SectionReveal
             direction="left"
             className="relative h-full sm:col-start-1 sm:row-start-1 sm:row-span-2"
@@ -89,7 +88,6 @@ export function About() {
             </div>
           </SectionReveal>
 
-          {/* Text content + stats - appears third on mobile, bottom-right on sm */}
           <div className="sm:col-start-2 sm:row-start-2 sm:h-full">
             <SectionReveal delay={0.1}>
               <p className="leading-relaxed text-[#a3a3a3]">{para1}</p>
@@ -106,14 +104,7 @@ export function About() {
             >
               {stats?.map((stat) => (
                 <StaggerItem key={stat.id}>
-                  <div className=" h-full items-center justify-center rounded-xl border border-[#262626] bg-[#141414] p-4 md:p-8 text-center transition-colors hover:border-[#dc2626]/40 w-full min-w-0 overflow-hidden">
-                    <p className="text-2xl font-black text-white md:text-3xl leading-none whitespace-nowrap">
-                      {stat.value}
-                    </p>
-                    <p className="mt-1 text-xs text-[#a3a3a3] w-full break-words">
-                      {stat.label}
-                    </p>
-                  </div>
+                  <StatCard value={stat.value} label={stat.label} />
                 </StaggerItem>
               ))}
             </StaggerContainer>

@@ -19,6 +19,8 @@ export function Testimonials() {
   if (isLoading) return null; // or skeleton
   if (error) return null;
 
+  console.log(testimonialsData);
+
   return (
     <section
       id="testimonials"
