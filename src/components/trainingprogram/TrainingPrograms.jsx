@@ -1,32 +1,14 @@
 import { SectionReveal, StaggerContainer, StaggerItem } from "../SectionReveal";
-import { useQuery } from "@tanstack/react-query";
-import { getTrainingProgramSection, getProgram } from "@/lib/strapi";
+import { useTrainingProgramsPage } from "@/hooks/queries";
 import { Badge } from "../ui/Badge";
 import { ProgramCard } from "./ProgramCard";
 
 export function TrainingPrograms() {
-  const {
-    data: trainingData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["training-program-section"],
-    queryFn: getTrainingProgramSection,
-  });
+  const { section, programs, isLoading, error } = useTrainingProgramsPage();
 
-  const {
-    data: programData,
-    isLoading: programLoading,
-    error: programError,
-  } = useQuery({
-    queryKey: ["program"],
-    queryFn: getProgram,
-  });
+  if (isLoading || error) return null;
 
-  if (isLoading || programLoading) return null;
-  if (error || programError) return null;
-
-  const { badgeText, headingLine1, headingHighlight, description, learnMoreButtonText } = trainingData;
+  const { badgeText, headingLine1, headingHighlight, description, learnMoreButtonText } = section;
 
   return (
     <section className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center bg-[#0a0a0a] py-10 md:py-24 lg:py-25">
@@ -52,7 +34,7 @@ export function TrainingPrograms() {
           stagger={0.08}
           delay={0.1}
         >
-          {programData?.map((program) => (
+          {programs.map((program) => (
             <StaggerItem key={program.documentId ?? program.id}>
               <ProgramCard program={program} learnMoreText={learnMoreButtonText} />
             </StaggerItem>

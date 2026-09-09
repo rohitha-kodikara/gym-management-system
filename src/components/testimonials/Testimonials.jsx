@@ -1,33 +1,14 @@
 import { SectionReveal, StaggerContainer, StaggerItem } from "../SectionReveal";
-import { useQuery } from "@tanstack/react-query";
-import { getTestimonials, getTestimonialSection } from "@/lib/strapi";
+import { useTestimonialsPage } from "@/hooks/queries";
 import { Badge } from "../ui/Badge";
 import { TestimonialCard } from "./TestimonialCard";
 
 export function Testimonials() {
-  const {
-    data: testimonialsData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["testimonials"],
-    queryFn: getTestimonials,
-  });
+  const { testimonials, section, isLoading, error } = useTestimonialsPage();
 
-  const {
-    data: testimonialSectionData,
-    isLoading: testimonialSectionLoading,
-    error: testimonialSectionError,
-  } = useQuery({
-    queryKey: ["testimonial-section"],
-    queryFn: getTestimonialSection,
-  });
+  if (isLoading || error) return null;
 
-  if (isLoading || testimonialSectionLoading) return null;
-  if (error || testimonialSectionError) return null;
-
-  const { badgeText, headingLine1, headingHighlight, description } =
-    testimonialSectionData;
+  const { badgeText, headingLine1, headingHighlight, description } = section;
 
   return (
     <section
@@ -57,7 +38,7 @@ export function Testimonials() {
           stagger={0.1}
           delay={0.1}
         >
-          {testimonialsData?.map((testimonial) => (
+          {testimonials.map((testimonial) => (
             <StaggerItem key={testimonial.documentId ?? testimonial.id}>
               <TestimonialCard testimonial={testimonial} />
             </StaggerItem>

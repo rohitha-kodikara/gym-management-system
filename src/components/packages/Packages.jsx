@@ -1,32 +1,14 @@
 import { SectionReveal, StaggerContainer, StaggerItem } from "../SectionReveal";
-import { useQuery } from "@tanstack/react-query";
-import { getPackages, getPackageSection } from "../../lib/strapi";
+import { usePackagesPage } from "@/hooks/queries";
 import { Badge } from "../ui/Badge";
 import { PackageCard } from "./PackageCard";
 
 export function Packages() {
-  const {
-    data: packagesData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["packages"],
-    queryFn: getPackages,
-  });
+  const { packages, section, isLoading, error } = usePackagesPage();
 
-  const {
-    data: packageSection,
-    isLoading: packageSectionLoading,
-    error: packageSectionError,
-  } = useQuery({
-    queryKey: ["package-sections"],
-    queryFn: getPackageSection,
-  });
+  if (isLoading || error) return null;
 
-  if (isLoading || packageSectionLoading) return null;
-  if (error || packageSectionError) return null;
-
-  const { Currency, badgeText, description, headingHighlight, headingLine1 } = packageSection;
+  const { Currency, badgeText, description, headingHighlight, headingLine1 } = section;
 
   return (
     <section
@@ -54,7 +36,7 @@ export function Packages() {
           stagger={0.1}
           delay={0.1}
         >
-          {packagesData?.map((pkg) => (
+          {packages.map((pkg) => (
             <StaggerItem key={pkg.type}>
               <PackageCard {...pkg} />
             </StaggerItem>

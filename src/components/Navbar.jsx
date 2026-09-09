@@ -1,21 +1,12 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "./custom-ui/Button";
 import { scrollToSection } from "../utils/scroll";
-import { getNavbar } from "@/lib/strapi";
+import { useNavbar } from "@/hooks/queries";
 
 export function Navbar() {
-  const {
-    data: navbarData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["navbar"],
-    queryFn: getNavbar,
-    staleTime: Infinity,
-  });
+  const { data: navbarData, isLoading, error } = useNavbar();
 
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -42,8 +33,7 @@ export function Navbar() {
     scrollToSection(href);
   };
 
-  if (isLoading) return null; // or skeleton
-  if (error) return null;
+  if (isLoading || error) return null;
 
   const {
     NavLink,
@@ -52,7 +42,7 @@ export function Navbar() {
     logoTextHighlight,
     loginButtonText,
     signupButtonText,
-  } = navbarData ?? {};
+  } = navbarData;
 
   return (
     <>

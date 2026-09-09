@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import { getFooter, getLocations } from "@/lib/strapi";
+import { useFooterPage } from "@/hooks/queries";
 import { clean, decodeEntities } from "@/lib/text";
 import { FooterSkeleton } from "./FooterSkeleton";
 import { FooterError } from "./FooterError";
@@ -72,52 +71,16 @@ function useFooterData(footerData, locationData) {
 }
 
 export function Footer() {
-  const {
-    data: footerData,
-    isLoading,
-    error,
-    refetch: refetchFooter,
-  } = useQuery({
-    queryKey: ["footer"],
-    queryFn: getFooter,
-    staleTime: 30_000,
-  });
-
-  const {
-    data: locationData,
-    isLoading: locationLoading,
-    error: locationError,
-    refetch: refetchLocations,
-  } = useQuery({
-    queryKey: ["locations"],
-    queryFn: getLocations,
-    staleTime: 30_000,
-  });
+  const { footer: footerData, locations: locationData, isLoading, error, onRetry } =
+    useFooterPage();
 
   const { fields, hoursLines, locations } = useFooterData(
     footerData,
     locationData
   );
 
-  if (isLoading || locationLoading) {
-    return <FooterSkeleton />;
-  }
-
-  const isFooterError = error && !footerData;
-  const isLocationsError = locationError && !locationData;
-
-  if (isFooterError || isLocationsError) {
-    return (
-      <FooterError
-        isFooterError={isFooterError}
-        isLocationsError={isLocationsError}
-        onRetry={() => {
-          if (isFooterError) refetchFooter();
-          if (isLocationsError) refetchLocations();
-        }}
-      />
-    );
-  }
+  if (isLoading) return <FooterSkeleton />;
+  if (error) return <FooterError onRetry={onRetry} />;
 
   return (
     <footer

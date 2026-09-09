@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { getHero, getLocations, getStrapiMedia } from "@/lib/strapi";
+import { useHeroPage } from "@/hooks/queries";
+import { getStrapiMedia } from "@/lib/strapi";
 import { useState } from "react";
 import { clean } from "@/lib/text";
 import { HeroSkeleton } from "./HeroSkeleton";
@@ -48,47 +48,11 @@ export function Hero() {
   const [success, setSuccess] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
 
-  const {
-    data: heroSData,
-    isLoading,
-    error,
-    refetch: refetchHero,
-  } = useQuery({
-    queryKey: ["hero"],
-    queryFn: getHero,
-    staleTime: 1000 * 1,
-  });
+  const { hero: heroSData, locations: locationsData, isLoading, error, onRetry } =
+    useHeroPage();
 
-  const {
-    data: locationsData,
-    isLoading: locationsLoading,
-    error: locationsError,
-    refetch: refetchLocations,
-  } = useQuery({
-    queryKey: ["locations"],
-    queryFn: getLocations,
-    staleTime: Infinity,
-  });
-
-  if (isLoading || locationsLoading) {
-    return <HeroSkeleton />;
-  }
-
-  const isHeroError = error && !heroSData;
-  const isLocationsError = locationsError && !locationsData;
-
-  if (isHeroError || isLocationsError) {
-    return (
-      <HeroError
-        isHeroError={isHeroError}
-        isLocationsError={isLocationsError}
-        onRetry={() => {
-          if (isHeroError) refetchHero();
-          if (isLocationsError) refetchLocations();
-        }}
-      />
-    );
-  }
+  if (isLoading) return <HeroSkeleton />;
+  if (error) return <HeroError onRetry={onRetry} />;
 
   const badge = clean(heroSData?.badgeText, FALLBACKS.badge);
   const heading1 = clean(heroSData?.mainHeadingLine1, FALLBACKS.mainHeadingLine1);

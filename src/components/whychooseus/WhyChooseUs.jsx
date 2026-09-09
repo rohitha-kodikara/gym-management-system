@@ -1,32 +1,14 @@
 import { SectionReveal, StaggerContainer, StaggerItem } from "../SectionReveal";
 import { Badge } from "../ui/Badge";
-import { useQuery } from "@tanstack/react-query";
-import { getWhyChooseUs, getFeature } from "@/lib/strapi";
+import { useWhyChooseUsPage } from "@/hooks/queries";
 import { FeatureCard } from "./FeatureCard";
 
 export function WhyChooseUs() {
-  const {
-    data: whyChooseUsData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["why-choose-us"],
-    queryFn: getWhyChooseUs,
-  });
+  const { section, features, isLoading, error } = useWhyChooseUsPage();
 
-  const {
-    data: featureData,
-    isLoading: featureLoading,
-    error: featureError,
-  } = useQuery({
-    queryKey: ["features"],
-    queryFn: getFeature,
-  });
+  if (isLoading || error) return null;
 
-  if (isLoading || featureLoading) return null;
-  if (error || featureError) return null;
-
-  const { badgeText, headingLine1, headingHighlight, description } = whyChooseUsData;
+  const { badgeText, headingLine1, headingHighlight, description } = section;
 
   return (
     <section className="relative flex min-h-screen w-full scroll-mt-16 flex-col justify-center bg-[#0a0a0a] py-10 md:py-24 lg:py-25">
@@ -52,7 +34,7 @@ export function WhyChooseUs() {
           stagger={0.08}
           delay={0.1}
         >
-          {featureData?.map((feature) => (
+          {features.map((feature) => (
             <StaggerItem key={feature.documentId ?? feature.id}>
               <FeatureCard feature={feature} />
             </StaggerItem>

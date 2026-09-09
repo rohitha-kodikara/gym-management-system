@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Activity } from "lucide-react";
 import { SectionReveal } from "../SectionReveal";
 import { Badge } from "../ui/Badge";
-import { useQuery } from "@tanstack/react-query";
-import { getBmiCategory, getBmiSection, getSupplements } from "@/lib/strapi";
+import { useBmiPage } from "@/hooks/queries";
 import { clean } from "@/lib/text";
 import { BMILoadingSkeleton } from "./BMILoadingSkeleton";
 import { BMIError } from "./BMIError";
@@ -12,37 +11,13 @@ import { BMIResult } from "./BMIResult";
 
 export function BMISection() {
   const {
-    data: bmiSectionData,
-    isLoading: isBmiSectionLoading,
-    error: bmiSectionError,
-    refetch: refetchBmiSection,
-  } = useQuery({
-    queryKey: ["bmi"],
-    queryFn: getBmiSection,
-    staleTime: 30_000,
-  });
-
-  const {
-    data: bmiCategoryData,
-    isLoading: isBmiCategoryLoading,
-    error: bmiCategoryError,
-    refetch: refetchBmiCategory,
-  } = useQuery({
-    queryKey: ["bmi-categories"],
-    queryFn: getBmiCategory,
-    staleTime: 30_000,
-  });
-
-  const {
-    data: supplementData,
-    isLoading: isSupplementLoading,
-    error: supplementError,
-    refetch: refetchSupplements,
-  } = useQuery({
-    queryKey: ["supplements"],
-    queryFn: getSupplements,
-    staleTime: 30_000,
-  });
+    section,
+    categories,
+    supplements,
+    isLoading,
+    error,
+    onRetry,
+  } = useBmiPage();
 
   const [form, setForm] = useState({
     age: "",
@@ -53,21 +28,8 @@ export function BMISection() {
   });
   const [result, setResult] = useState(null);
 
-  if (isBmiSectionLoading || isBmiCategoryLoading || isSupplementLoading) {
-    return <BMILoadingSkeleton />;
-  }
-
-  if (bmiSectionError || bmiCategoryError || supplementError) {
-    return (
-      <BMIError
-        onRetry={() => {
-          if (bmiSectionError) refetchBmiSection();
-          if (bmiCategoryError) refetchBmiCategory();
-          if (supplementError) refetchSupplements();
-        }}
-      />
-    );
-  }
+  if (isLoading) return <BMILoadingSkeleton />;
+  if (error) return <BMIError onRetry={onRetry} />;
 
   const {
     Form = [],
@@ -79,7 +41,7 @@ export function BMISection() {
     resetButtonText,
     resultLabel,
     bmiInfoNote,
-  } = bmiSectionData ?? {};
+  } = section;
 
   const formFields = Form.filter(
     (f) => f.__component === "shared.bmi-form-fields"
@@ -103,8 +65,6 @@ export function BMISection() {
   );
   const memberBadge = clean(memberBadgeText, "For Registered Members");
 
-  const categories = bmiCategoryData ?? [];
-  const supplements = supplementData ?? [];
   const defaultGoal = goalOptions[0]?.value ?? "";
 
   const calculate = (e) => {

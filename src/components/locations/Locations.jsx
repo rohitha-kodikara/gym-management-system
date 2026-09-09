@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getLocations, getLocationSection } from "@/lib/strapi";
-import { useQuery } from "@tanstack/react-query";
+import { useLocationsPage } from "@/hooks/queries";
 import { clean } from "@/lib/text";
 import { SectionReveal } from "../SectionReveal";
 import { Badge } from "../ui/Badge";
@@ -35,27 +34,9 @@ export function Locations() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const {
-    data: locationsData,
-    isLoading,
-    error,
-    refetch: refetchLocations,
-  } = useQuery({
-    queryKey: ["locations"],
-    queryFn: getLocations,
-  });
+  const { locations, section, isLoading, error, onRetry } = useLocationsPage();
 
-  const {
-    data: locationSectionData,
-    isLoading: locationSectionLoading,
-    error: locationSectionError,
-    refetch: refetchSection,
-  } = useQuery({
-    queryKey: ["locations-section"],
-    queryFn: getLocationSection,
-  });
-
-  const safeLocations = locationsData ?? [];
+  const safeLocations = locations;
   const maxIndex = Math.max(0, safeLocations.length - perView);
   const activeIndex = Math.min(index, maxIndex);
   const slideWidth = perView === 1 ? 100 : 100 / perView;
@@ -74,41 +55,14 @@ export function Locations() {
     return () => clearInterval(id);
   }, [next, paused, maxIndex]);
 
-  if (isLoading || locationSectionLoading) {
-    return <LocationsSkeleton />;
-  }
+  if (isLoading) return <LocationsSkeleton />;
+  if (error) return <LocationsError onRetry={onRetry} />;
 
-  const isLocationsError = error && !locationsData;
-  const isSectionError = locationSectionError && !locationSectionData;
-
-  if (isLocationsError || isSectionError) {
-    return (
-      <LocationsError
-        onRetry={() => {
-          if (isLocationsError) refetchLocations();
-          if (isSectionError) refetchSection();
-        }}
-      />
-    );
-  }
-
-  const badge = clean(locationSectionData?.badgeText, FALLBACKS.badge);
-  const headingLine1 = clean(
-    locationSectionData?.headingLine1,
-    FALLBACKS.headingLine1
-  );
-  const headingHighlight = clean(
-    locationSectionData?.headingHighlight,
-    FALLBACKS.headingHighlight
-  );
-  const description = clean(
-    locationSectionData?.description,
-    FALLBACKS.description
-  );
-  const mapButtonText = clean(
-    locationSectionData?.mapLinkButtonText,
-    FALLBACKS.mapButtonText
-  );
+  const badge = clean(section.badgeText, FALLBACKS.badge);
+  const headingLine1 = clean(section.headingLine1, FALLBACKS.headingLine1);
+  const headingHighlight = clean(section.headingHighlight, FALLBACKS.headingHighlight);
+  const description = clean(section.description, FALLBACKS.description);
+  const mapButtonText = clean(section.mapLinkButtonText, FALLBACKS.mapButtonText);
 
   return (
     <section

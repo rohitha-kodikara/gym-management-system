@@ -2,26 +2,17 @@ import { ArrowRight, Calendar } from "lucide-react";
 import { SectionReveal } from "../SectionReveal";
 import { Button } from "../custom-ui/Button";
 import { Badge } from "../ui/Badge";
-import { useQuery } from "@tanstack/react-query";
-import { getFinalCTA, getStrapiMedia } from "@/lib/strapi";
+import { useFinalCTA } from "@/hooks/queries";
+import { getStrapiMedia } from "@/lib/strapi";
 import { clean, decodeEntities } from "@/lib/text";
 import { FinalCTALoadingSkeleton } from "./FinalCTALoadingSkeleton";
 import { FinalCTAError } from "./FinalCTAError";
 
 export function FinalCTA() {
-  const {
-    data: finalCTAData,
-    isLoading,
-    error,
-    refetch,
-  } = useQuery({
-    queryKey: ["final-cta"],
-    queryFn: getFinalCTA,
-    staleTime: Infinity,
-  });
+  const { data: finalCTAData, isLoading, error, onRetry } = useFinalCTA();
 
   if (isLoading) return <FinalCTALoadingSkeleton />;
-  if (error) return <FinalCTAError onRetry={() => refetch()} />;
+  if (error) return <FinalCTAError onRetry={onRetry} />;
 
   const {
     badgeText,
@@ -31,7 +22,7 @@ export function FinalCTA() {
     primaryButtonText,
     secondaryButtonText,
     backgroundImage,
-  } = finalCTAData ?? {};
+  } = finalCTAData;
 
   const badge = clean(badgeText, "Start Today");
   const title = clean(heading, "Your Stronger Journey");

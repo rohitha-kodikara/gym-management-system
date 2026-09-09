@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { SectionReveal, StaggerContainer, StaggerItem } from "../SectionReveal";
 import { Badge } from "../ui/Badge";
-import { getAbout } from "@/lib/strapi";
+import { useAbout } from "@/hooks/queries";
 import { clean } from "@/lib/text";
 import { StatCard } from "./StatCard";
 
@@ -14,18 +13,9 @@ const resolveImageUrl = (url) => {
 };
 
 export function About() {
-  const {
-    data: aboutData,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["about-section"],
-    queryFn: getAbout,
-    staleTime: 30_000,
-  });
+  const { data: aboutData, isLoading, error } = useAbout();
 
-  if (isLoading) return null;
-  if (error) return null;
+  if (isLoading || error) return null;
 
   const {
     badgeText = "Our Story",
@@ -37,7 +27,7 @@ export function About() {
     imageAltText = "Modern gym with members training",
     image,
     stats,
-  } = aboutData ?? {};
+  } = aboutData;
 
   const badge = clean(badgeText, "Our Story");
   const title = clean(heading, "We Believe Strength Is Built,");
